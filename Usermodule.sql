@@ -1,0 +1,536 @@
+-- SELECT * FROM moodleuser.user;
+-- CREATE TABLE IF NOT EXISTS role_assignments (
+--     id bigint PRIMARY KEY,
+--     roleid bigint NOT NULL,
+--     contextid bigint NOT NULL,
+--     userid bigint NOT NULL,
+--     timemodified bigint,
+--     modifierid bigint,
+--     component VARCHAR(100),
+--     itemid bigint,
+--     sortorder bigint,
+--     FOREIGN KEY (userid) REFERENCES user(id)
+-- );
+-- Drop the existing table if it exists
+-- DROP TABLE IF EXISTS role_assignments;
+
+-- Create the role_assignments table with correct data types
+-- CREATE TABLE IF NOT EXISTS role_assignments (
+--     id INT PRIMARY KEY,
+--     roleid INT NOT NULL,
+--     contextid INT NOT NULL,
+--     userid INT NOT NULL,
+--     timemodified INT,
+--     modifierid INT,
+--     component VARCHAR(255),
+--     itemid INT,
+--     sortorder INT,
+--     FOREIGN KEY (userid) REFERENCES user(id)
+-- );
+-- id INT PRIMARY KEY: The primary key for the role_assignments table.
+-- roleid INT NOT NULL: The ID of the role being assigned.
+-- contextid INT NOT NULL: The ID of the context in which the role is assigned.
+-- userid INT NOT NULL: The ID of the user to whom the role is assigned.
+-- timemodified INT: The timestamp of when the role assignment was last modified.
+-- modifierid INT: The ID of the user who last modified the role assignment.
+-- component VARCHAR(255): The component associated with the role assignment.
+-- itemid INT: The ID of the item associated with the role assignment.
+-- sortorder INT: The sort order for the role assignment.
+-- FOREIGN KEY (userid) REFERENCES user(id): A foreign key constraint to ensure that the userid in role_assignments exists in the user table.
+-- Create the user_enrollments table with correct data types and foreign key constraint
+-- CREATE TABLE IF NOT EXISTS user_enrollments (
+--     id bigint PRIMARY KEY,
+--     status TINYINT(1) NOT NULL,
+--     enrolid bigint NOT NULL,
+--     userid bigint NOT NULL,
+--     timestart bigint,
+--     timeend bigint,
+--     modifierid bigint,
+--     timecreated bigint,
+--     timemodified bigint,
+--     FOREIGN KEY (userid) REFERENCES user(id)
+-- );
+-- desc user;
+-- DROP TABLE IF EXISTS user_enrollments;
+
+-- -- Create the user_enrollments table with correct foreign key reference
+-- CREATE TABLE IF NOT EXISTS user_enrollments (
+--     id INT PRIMARY KEY,
+--     status TINYINT(1) NOT NULL,
+--     enrolid INT NOT NULL,
+--     userid INT NOT NULL,
+--     timestart INT,
+--     timeend INT,
+--     modifierid INT,
+--     timecreated INT,
+--     timemodified INT,
+--     FOREIGN KEY (id) REFERENCES user(id)
+-- );
+-- CREATE TABLE IF NOT EXISTS quiz_attempts (
+--     id INT PRIMARY KEY,
+--     quiz INT NOT NULL,
+--     userid INT NOT NULL,
+--     attempt INT NOT NULL,
+--     uniqueid INT NOT NULL,
+--     layout longtext,
+--     currentpage INT NOT NULL,
+--     preview smallint,
+--     state VARCHAR(16) NOT NULL,
+--     timestart INT,
+--     timefinish INT,
+--     timemodified INT,
+--     timemodifiedoffline INT,
+--     timecheckstate INT,
+--     sumgrades DECIMAL(10, 5),
+--     gradednotificationsenttime INT,
+--     FOREIGN KEY (userid) REFERENCES user(id)
+-- );
+-- Create the forum_discussions table with correct data types and foreign key constraints
+-- CREATE TABLE IF NOT EXISTS forum_discussions (
+--     id INT PRIMARY KEY,
+--     course INT NOT NULL,
+--     forum INT NOT NULL,
+--     name VARCHAR(255) NOT NULL,
+--     firstpost INT NOT NULL,
+--     userid INT NOT NULL,
+--     groupid INT,
+--     assessed INT,
+--     timemodified INT,
+--     usermodified INT,
+--     timestart INT,
+--     timeend INT,
+--     pinned TINYINT(1) DEFAULT 0,
+--     timelocked INT,
+--     FOREIGN KEY (userid) REFERENCES user(id),
+--     FOREIGN KEY (firstpost) REFERENCES user(id)
+-- );
+-- id:
+-- Type: INT
+-- Definition: Unique identifier for each discussion.
+-- course:
+-- Type: INT
+-- Definition: ID of the course to which the discussion belongs.
+-- forum:
+-- Type: INT
+-- Definition: ID of the forum within the course where the discussion is taking place.
+-- name:
+-- Type: VARCHAR(255)
+-- Definition: Title or name of the discussion.
+-- firstpost:
+-- Type: INT
+-- Definition: ID of the first post in the discussion. This typically references an entry in a posts table or similar, identifying the starting post of the discussion.
+-- userid:
+-- Type: INT
+-- Definition: ID of the user who started the discussion.
+-- groupid:
+-- Type: INT
+-- Definition: ID of the group associated with the discussion, if any.
+-- assessed:
+-- Type: INT
+-- Definition: Assessment status of the discussion.
+-- timemodified:
+-- Type: INT
+-- Definition: Timestamp of the last modification to the discussion.
+-- usermodified:
+-- Type: INT
+-- Definition: ID of the user who last modified the discussion.
+-- timestart:
+-- Type: INT
+-- Definition: Start time of the discussion (timestamp).
+-- timeend:
+-- Type: INT
+-- Definition: End time of the discussion (timestamp).
+-- pinned:
+-- Type: TINYINT(1)
+-- Definition: Indicates whether the discussion is pinned to the top of the forum.
+-- timelocked:
+-- Type: INT
+-- Definition: Time when the discussion was locked (timestamp).
+-- FOREIGN KEY (userid) REFERENCES user(id):
+-- Definition: Foreign key constraint ensuring that the userid exists in the user table.
+-- FOREIGN KEY (firstpost) REFERENCES posts(id):
+-- Definition: Foreign key constraint ensuring that the firstpost exists in the posts table.
+-- These definitions provide an understanding of what each field represents and how it contributes to the structure of the forum_discussions table.
+-- select * from quiz_attempts;
+-- CREATE TABLE IF NOT EXISTS quiz (
+--     id INT PRIMARY KEY,
+--     course INT NOT NULL,
+--     name VARCHAR(255) NOT NULL,
+--     intro longtext,
+--     introformat INT,
+--     timeopen bigint,
+--     timelimit bigint,
+--     overduehandling varchar(16),
+--     graceperiod bigint(19),
+--     preferredbehaviour VARCHAR(32),
+--     canredoquestions smallint(5),
+--     attempts INT,
+--     attemptonlast smallint(5),
+--     grademethod smallint(5),
+--     decimalpoints smallint(5),
+--     questiondecimalpoints smallint(5),
+--     reviewattempt mediumint(7),
+--     reviewcorrectness mediumint(7),
+--     reviewmarks mediumint(7),
+--     reviewspecificfeedback mediumint(7),
+--     reviewgeneralfeedback mediumint(7),
+--     reviewrightanswer mediumint(7),
+--     reviewoverallfeedback mediumint(7),
+--     questionsperpage bigint(19),
+--     navmethod VARCHAR(16),
+--     shuffleanswers smallint(5),
+--     sumgrades DECIMAL(10, 5),
+--     grade DECIMAL(10, 5),
+--     timecreated bigint(19),
+--     timemodified bigint(19),
+--     password VARCHAR(255),
+--     subnet VARCHAR(255),
+--     browsersecurity varchar(32),
+--     delay1 bigint(19),
+--     delay2 bigint(19),
+--     showuserpicture smallint(5),
+--     showblocks smallint(5),
+--     completionattemptsexhausted bit(1),
+--     completionpass bit(1),
+--     allowofflineattempts bit(1)
+-- );
+-- desc quiz_attempts;
+-- ALTER TABLE quiz_attempts
+-- ADD COLUMN quiz_id INT,
+-- ADD CONSTRAINT fk_quiz_id
+--     FOREIGN KEY (quiz_id)
+--     REFERENCES quiz(id);
+
+-- CREATE TABLE IF NOT EXISTS grades (
+--     id INT PRIMARY KEY,
+--     itemid bigint NOT NULL,
+--     userid bigint NOT NULL,
+--     rawgrade DECIMAL(10, 5),
+--     rawgrademax DECIMAL(10, 5),
+--     rawgrademin DECIMAL(10, 5),
+--     rawscaleid bigint,
+--     usermodified bigint,
+--     finalgrade DECIMAL(10, 5),
+--     hidden bigint,
+--     locked bigint,
+--     locktime bigint,
+--     exported bigint,
+--     overridden bigint,
+--     excluded bigint,
+--     feedback longtext,
+--     feedbackformat bigint,
+--     information longtext,
+--     informationformat bigint,
+--     timecreated bigint,
+--     timemodified bigint,
+--     aggregationstatus varchar(10),
+--     aggregationweight DECIMAL(10, 5)
+-- );
+-- CREATE TABLE IF NOT EXISTS enroll (
+--     id INT PRIMARY KEY,
+--     enroll VARCHAR(255),
+--     courseid INT,
+--     roleid INT,
+--     FOREIGN KEY (courseid) REFERENCES courses(id),
+--     FOREIGN KEY (roleid) REFERENCES roles(id)
+-- );
+-- CREATE TABLE IF NOT EXISTS course (
+--     id INT PRIMARY KEY,
+--     category bigint(19),
+--     sortorder bigint(19),
+--     fullname VARCHAR(255),
+--     shortname VARCHAR(255),
+--     idnumber VARCHAR(100),
+--     summary longtext,
+--     summaryformat INT,
+--     format VARCHAR(50),
+--     showgrades smallint(3),
+--     newsitems INT,
+--     startdate bigint(19),
+--     enddate bigint(19),
+--     relativedatesmode tinyint(1),
+--     marker bigint(19),
+--     maxbytes bigint(19),
+--     legacyfiles smallint(5),
+--     showreports smallint(5),
+--     visible TINYINT(1),
+--     visibleold TINYINT(1),
+--     groupmode smallint(5),
+--     groupmodeforce smallint(5),
+--     defaultgroupingid bigint(19),
+--     lang VARCHAR(30),
+--     calendartype VARCHAR(30),
+--     theme VARCHAR(50),
+--     timecreated bigint(19),
+--     timemodified bigint(19),
+--     requested TINYINT(1),
+--     enablecompletion TINYINT(1),
+--     completionnotify TINYINT(1),
+--     cacherev bigint(19)
+-- );
+-- CREATE TABLE IF NOT EXISTS course_enroll (
+--     id INT PRIMARY KEY AUTO_INCREMENT,
+--     course_id INT,
+--     user_id INT,
+--     FOREIGN KEY (course_id) REFERENCES course(id),
+--     FOREIGN KEY (user_id) REFERENCES user(id)
+-- );
+
+
+-- CREATE TABLE IF NOT EXISTS post (
+--     id INT PRIMARY KEY AUTO_INCREMENT,
+--     module VARCHAR(20),
+--     userid INT,
+--     courseid INT,
+--     groupid INT,
+--     moduleid INT,
+--     coursemoduleid INT,
+--     subject VARCHAR(128),
+--     summary longtext,
+--     content LONGTEXT,
+--     uniquehash VARCHAR(255),
+--     rating bigint,
+--     format bigint,
+--     summaryformat INT,
+--     attachment varchar(100),
+--     publishstate VARCHAR(20),
+--     lastmodified bigint,
+--     created bigint,
+--     usermodified bigint,
+--     FOREIGN KEY (userid) REFERENCES user(id),
+--     FOREIGN KEY (courseid) REFERENCES course(id)
+-- );
+
+-- CREATE TABLE IF NOT EXISTS post (
+--     id INT PRIMARY KEY AUTO_INCREMENT,
+--     module VARCHAR(255),
+--     userid INT,
+--     courseid INT,
+--     groupid INT,
+--     moduleid INT,
+--     coursemoduleid INT,
+--     subject VARCHAR(255),
+--     summary TEXT,
+--     content LONGTEXT,
+--     uniquehash VARCHAR(255),
+--     rating DECIMAL(5, 2),
+--     format INT,
+--     summaryformat INT,
+--     attachment TEXT,
+--     publishstate VARCHAR(50),
+--     lastmodified INT,
+--     created INT,
+--     usermodified INT,
+--     FOREIGN KEY (userid) REFERENCES user(id),
+--     FOREIGN KEY (courseid) REFERENCES course(id)
+-- );
+
+-- CREATE TABLE IF NOT EXISTS contentbank (
+--     id INT PRIMARY KEY AUTO_INCREMENT,
+--     name VARCHAR(255),
+--     contenttype VARCHAR(100),
+--     contextid bigint,
+--     visibility TINYINT(1),
+--     instanceid bigint,
+--     configdata longtext,
+--     usercreated bigint,
+--     usermodified bigint,
+--     timecreated bigint,
+--     timemodified bigint,
+--     postid INT,
+--     FOREIGN KEY (usercreated) REFERENCES user(id),
+--     FOREIGN KEY (usermodified) REFERENCES user(id),
+--     FOREIGN KEY (postid) REFERENCES post(id)
+-- );
+-- CREATE TABLE IF NOT EXISTS contentbank (
+--     id INT PRIMARY KEY AUTO_INCREMENT,
+--     name VARCHAR(255),
+--     contenttype VARCHAR(100),
+--     contextid INT,
+--     visibility TINYINT(1),
+--     instanceid INT,
+--     configdata TEXT,
+--     usercreated INT,
+--     usermodified INT,
+--     timecreated INT,
+--     timemodified INT,
+--     postid INT,
+--     FOREIGN KEY (usercreated) REFERENCES user(id),
+--     FOREIGN KEY (usermodified) REFERENCES user(id),
+--     FOREIGN KEY (postid) REFERENCES post(id)
+-- );
+-- CREATE TABLE IF NOT EXISTS assignment_submission (
+--     id INT PRIMARY KEY AUTO_INCREMENT,
+--     assignment INT,
+--     userid INT,
+--     timecreated BIGINT,
+--     timemodified BIGINT,
+--     numfiles BIGINT,
+--     data1 longtext,
+--     data2 longtext,
+--     grade bigint,
+--     submissioncomment longtext,
+--     format INT,
+--     teacher INT,
+--     timemarked BIGINT,
+--     mailed TINYINT(1),
+--     FOREIGN KEY (assignment) REFERENCES assignment(id),
+--     FOREIGN KEY (userid) REFERENCES user(id),
+--     FOREIGN KEY (teacher) REFERENCES user(id)
+-- );
+-- CREATE TABLE IF NOT EXISTS assignment (
+--     id INT PRIMARY KEY AUTO_INCREMENT,
+--     course INT NOT NULL,
+--     name VARCHAR(255) NOT NULL,
+--     intro TEXT,
+--     introformat INT,
+--     alwaysshowdescription TINYINT(1),
+--     nosubmissions TINYINT(1),
+--     submissiondrafts TINYINT(1),
+--     sendnotifications TINYINT(1),
+--     duedate BIGINT,
+--     allowsubmissionsfromdate BIGINT,
+--     grade DECIMAL(10, 5),
+--     timemodified BIGINT,
+--     requiresubmissionstatement TINYINT(1),
+--     completionsubmit TINYINT(1),
+--     cutoffdate BIGINT,
+--     gradingduedate BIGINT,
+--     teamsubmissiongroupingid INT,
+--     blindmarking TINYINT(1),
+--     hidegrader TINYINT(1),
+--     revealidentities TINYINT(1),
+--     attemptreopenmethod VARCHAR(50),
+--     maxattempts INT,
+--     markingworkflow TINYINT(1),
+--     markingallocation TINYINT(1),
+--     sendstudentnotifications TINYINT(1),
+--     preventsubmissionnotinggroup TINYINT(1)
+-- );
+-- CREATE TABLE IF NOT EXISTS assignment_submissions (
+--     id INT PRIMARY KEY AUTO_INCREMENT,
+--     assignment INT NOT NULL,
+--     userid INT NOT NULL,
+--     timecreated BIGINT NOT NULL,
+--     timemodified BIGINT NOT NULL,
+--     numfiles BIGINT,
+--     data1 LONGTEXT,
+--     data2 LONGTEXT,
+--     grade BIGINT,
+--     submissioncomment LONGTEXT,
+--     format INT,
+--     teacher INT,
+--     timemarked BIGINT,
+--     mailed TINYINT(1)
+-- );
+-- ALTER TABLE assignment_submissions
+-- ADD CONSTRAINT
+-- FOREIGN KEY (userid)
+-- REFERENCES user(id);
+
+-- ALTER TABLE assignment_submissions
+-- ADD CONSTRAINT 
+-- FOREIGN KEY (assignment)
+-- REFERENCES assignment(id);
+-- create table IF NOT EXISTS question_categories(
+--  id INT PRIMARY KEY AUTO_INCREMENT,
+--  name varchar(255),
+--  contextid bigint(19),
+--  info longtext,
+--  infoformat smallint(3),
+--  stamp varchar(255),
+--  sortorder bigint(19),
+--  idnumber varchar(100),
+--  parent bigint(19),
+-- FOREIGN KEY (question) REFERENCES question(id)
+-- );
+
+use moodleuser;
+
+-- CREATE TABLE quizslots (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     slot INT NOT NULL,
+--     quizid INT,
+--     page INT,
+--     requireprevious BOOLEAN,
+--     questionid INT,
+--     questioncategoryid INT,
+--     includingsubcategories BOOLEAN,
+--     maxmark DECIMAL(5, 2),
+--     FOREIGN KEY (quizid) REFERENCES quizz(id),
+--     FOREIGN KEY (questionid) REFERENCES questions(id),
+--     FOREIGN KEY (questioncategoryid) REFERENCES questioncategories(id)
+-- );
+-- CREATE TABLE question_categories (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     name VARCHAR(255) NOT NULL,
+--     contextid INT NOT NULL,
+--     info LONGTEXT,
+--     infoformat INT,
+--     stamp VARCHAR(255),
+--     sortorder INT,
+--     idnumber VARCHAR(100)
+-- );
+-- CREATE TABLE IF NOT EXISTS question (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     category INT NOT NULL,
+--     name VARCHAR(255) NOT NULL,
+--     questiontext LONGTEXT,
+--     questiontextformat INT,
+--     generalfeedback LONGTEXT,
+--     generalfeedbackformat INT,
+--     defaultmark DECIMAL(12, 7),
+--     penalty DECIMAL(12, 7),
+--     qtype VARCHAR(20),
+--     length BIGINT,
+--     stamp VARCHAR(255),
+--     version VARCHAR(255),
+--     hidden BIT(1),
+--     timecreated BIGINT(19),
+--     timemodified BIGINT(19),
+--     createdby INT(19),
+--     modifiedby INT(19),
+--     idnumber VARCHAR(100)
+-- );
+
+-- Alter table to add foreign key constraints for createdby and modifiedby columns
+-- ALTER TABLE question
+-- ADD CONSTRAINT  FOREIGN KEY (createdby) REFERENCES user(id);
+-- ALTER TABLE question
+-- ADD CONSTRAINT  FOREIGN KEY (modifiedby) REFERENCES user(id);
+
+-- CREATE TABLE quiz_slots (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     slot INT NOT NULL,
+--     quizid INT,
+--     page INT,
+--     requireprevious BOOLEAN,
+--     questionid INT,
+--     questioncategoryid INT,
+--     maxmark DECIMAL(10, 2)
+-- );
+
+-- ALTER TABLE quiz_slots
+-- ADD CONSTRAINT  FOREIGN KEY (questionid) REFERENCES question(id);
+-- ALTER TABLE quiz_slots
+-- ADD CONSTRAINT  FOREIGN KEY (questioncategoryid) REFERENCES question_categories(id);
+-- ALTER TABLE quiz_slots
+-- ADD CONSTRAINT FOREIGN KEY (quizid) REFERENCES quiz(id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
